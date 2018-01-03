@@ -6,6 +6,7 @@ public class ShipController : MonoBehaviour {
 
 
     public int moveSpeed;
+    private Vector2 touchOrigin = -Vector2.one;
 
 
     Rigidbody2D rb2d;
@@ -18,6 +19,11 @@ public class ShipController : MonoBehaviour {
     public float minX;
     public float maxX;
 
+    private float dist;
+    private bool dragging = false;
+    private Vector3 offset;
+    private Transform toDrag;
+
     private void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
@@ -26,34 +32,43 @@ public class ShipController : MonoBehaviour {
 
     private void Update()
     {
-        if(transform.position.x < minX)
+
+
+
+        
+
+        Vector2 mousePoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if (mousePoint.x >= minX && mousePoint.x <= maxX)
         {
-            moveToLeft = false;
+            //rb2d.AddForce(new Vector2(mousePoint.x, transform.position.y), ForceMode2D.Force);
+            transform.position = new Vector2(mousePoint.x, transform.position.y);
         }
 
-        if(transform.position.x > maxX)
+
+
+        if (Input.touchCount != 1)
         {
-            moveToRight = false;
+            dragging = false;
+            return;
         }
 
-        if(moveToLeft)
+        Touch touch = Input.touches[0];
+
+        if (touch.phase == TouchPhase.Moved)
         {
-            movement.x = (transform.right * Time.deltaTime * -moveSpeed).x;
-
-            movement = movement + (Vector2)transform.position;
-
-
-        } else if (moveToRight)
-        {
-            movement.x = (transform.right * Time.deltaTime * moveSpeed).x;
-
-            movement = movement + (Vector2)transform.position;
-
-//            rb2d.MovePosition(movement);
+            Vector2 point = Camera.main.ScreenToWorldPoint(touch.position);
+            if (point.x >= minX && point.x <= maxX)
+            {
+                transform.position = new Vector2(point.x, transform.position.y);
+            }
         }
 
-        rb2d.MovePosition(movement);
+
     }
+
+
+
+
 
 
     public void MoveLeft ()

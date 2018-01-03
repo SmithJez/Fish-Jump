@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Fish
+  - Owned
+  - Water
+  - Box
   layers:
   - Default
   - TransparentFX
