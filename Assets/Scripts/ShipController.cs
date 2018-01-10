@@ -40,7 +40,30 @@ public class ShipController : MonoBehaviour {
         Vector2 mousePoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         if (mousePoint.x >= minX && mousePoint.x <= maxX)
         {
+            float curDirection = transform.localScale.x;
+
+            float curX = transform.position.x;
+            float newX = mousePoint.x;
+            float dif = curX - newX;
+
+
+            if (dif == 0)
+            {
+                transform.localScale = new Vector2(transform.localScale.x, transform.localScale.y);
+            }
+            else if (dif > 0 && curDirection > 0)
+            {
+                transform.localScale = new Vector2(-transform.localScale.x, transform.localScale.y);
+            }
+            else if (dif < 0 )
+            {
+                transform.localScale = new Vector2(Mathf.Abs(transform.localScale.x), transform.localScale.y);
+            }
+
             //rb2d.AddForce(new Vector2(mousePoint.x, transform.position.y), ForceMode2D.Force);
+
+
+
             transform.position = new Vector2(mousePoint.x, transform.position.y);
         }
 
